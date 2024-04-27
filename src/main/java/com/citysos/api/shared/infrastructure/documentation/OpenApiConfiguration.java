@@ -13,14 +13,14 @@ public class OpenApiConfiguration {
     public OpenAPI cityUpOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("CityUp API")
-                        .description("CitySOS | CityUp - application REST API documentation.")
+                        .title("THE CityUP API")
+                        .description("CitySOS | CityUP - application REST API documentation.")
                         .version("1.0.0")
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("https://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
                         .description("CityUp Wiki Documentation")
-                        .url("https://github.com/WilverAR/crud.csv-backend/wiki"));
+                        .url("https://github.com/CityUp-UPC/citysos-api/wiki"));
     }
 }
