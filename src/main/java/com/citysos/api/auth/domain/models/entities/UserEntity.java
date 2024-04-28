@@ -7,12 +7,12 @@ import lombok.*;
 
 import java.util.Set;
 
-@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
-@Entity
 @Table(name = "users")
 public class UserEntity {
 

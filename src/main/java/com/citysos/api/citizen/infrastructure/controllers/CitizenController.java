@@ -5,10 +5,12 @@ import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
 import com.citysos.api.citizen.infrastructure.resources.response.CitizenResponse;
 import com.citysos.api.shared.domain.exceptions.ResourceNotFoundException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/citizens", produces = "application/json")
+@RequestMapping(value = "api/v1/citizens", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Citizen", description = "The Citizens API")
 public class CitizenController {
@@ -27,8 +29,8 @@ public class CitizenController {
         this.modelMapper = modelMapper;
     }
 
-    @Transactional
-    @PostMapping("/sign-up")
+    //@Transactional
+    //@PostMapping("/sign-up")
     public ResponseEntity<CitizenResponse> register(@Valid @RequestBody CitizenRequest citizenRequest) {
         Long id = citizenService.createCitizen(citizenRequest);
         Citizen citizenCreated = citizenService.getCitizenById(id)
@@ -69,7 +71,7 @@ public class CitizenController {
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        citizenService.deleteCitizen(id);
+        citizenService.deleteCitizenById(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

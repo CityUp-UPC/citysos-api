@@ -11,7 +11,7 @@ public interface CitizenService {
     Optional<Citizen> getCitizenById(Long id);
     List<Citizen> getAllCitizens();
     Citizen updateCitizen(Long id, CitizenRequest citizenRequest);
-    void deleteCitizen(Long id);
+    void deleteCitizenById(Long id);
     Citizen logInCitizen(String email, String password);
     void updatePassword(Long id, String password);
 }

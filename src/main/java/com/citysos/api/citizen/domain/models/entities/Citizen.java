@@ -1,5 +1,6 @@
 package com.citysos.api.citizen.domain.models.entities;
 
+import com.citysos.api.auth.domain.models.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "citizens")
 public class Citizen {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AlertImpl implements AlertService {
+public class AlertServiceImpl implements AlertService {
     private final AlertRepository alertRepository;
     private final ModelMapper modelMapper;
-    public AlertImpl(AlertRepository alertRepository, ModelMapper modelMapper) {
+    public AlertServiceImpl(AlertRepository alertRepository, ModelMapper modelMapper) {
         this.alertRepository = alertRepository;
         this.modelMapper = modelMapper;
     }

@@ -4,12 +4,12 @@ import com.citysos.api.auth.domain.models.enums.ERole;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
-@Entity
 @Table(name = "roles")
 public class RoleEntity {
 

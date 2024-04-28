@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CitizenImpl implements CitizenService {
+public class CitizenServiceImpl implements CitizenService {
     private final CitizenRepository citizenRepository;
     private final ModelMapper modelMapper;
-    public CitizenImpl(CitizenRepository citizenRepository, ModelMapper modelMapper) {
+    public CitizenServiceImpl(CitizenRepository citizenRepository, ModelMapper modelMapper) {
         this.citizenRepository = citizenRepository;
         this.modelMapper = modelMapper;
     }
@@ -38,7 +38,7 @@ public class CitizenImpl implements CitizenService {
     }
 
     @Override
-    public void deleteCitizen(Long id) {
+    public void deleteCitizenById(Long id) {
         if (!citizenRepository.existsById(id)) {
             throw new RuntimeException("Citizen not found with id: " + id);
         }

@@ -4,6 +4,11 @@ import com.citysos.api.auth.domain.models.entities.RoleEntity;
 import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.auth.domain.models.enums.ERole;
 import com.citysos.api.auth.infrastructure.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,15 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
-@RequiredArgsConstructor
 @SpringBootApplication
+@RequiredArgsConstructor
+@OpenAPIDefinition(info = @Info(title = "CitySOS API", version = "1.0", description = "CitySOS API Information"))
 public class ApiApplication {
 
     public static void main(String[] args) {
 
         SpringApplication.run(ApiApplication.class, args);
 
-        String url = "http://localhost:8080/swagger-ui.html";
+        String url = "http://localhost:8080/swagger-ui/index.html";
         System.out.println("\n• Swagger UI is available at » " + url);
     }
 
@@ -36,7 +42,7 @@ public class ApiApplication {
                     .username("wilver-ar")
                     .password(passwordEncoder.encode("1234"))
                     .roles(Set.of(RoleEntity.builder()
-                            .role(ERole.valueOf(ERole.ADMIN.name()))
+                            .role(ERole.valueOf(ERole.POLICE.name()))
                             .build()))
                     .build();
 
@@ -45,22 +51,12 @@ public class ApiApplication {
                     .username("jack-ar")
                     .password(passwordEncoder.encode("1234"))
                     .roles(Set.of(RoleEntity.builder()
-                            .role(ERole.valueOf(ERole.USER.name()))
-                            .build()))
-                    .build();
-
-            UserEntity userEntity3 = UserEntity.builder()
-                    .email("brandon.ar.dev@gmail.com")
-                    .username("brandon-ar")
-                    .password(passwordEncoder.encode("1234"))
-                    .roles(Set.of(RoleEntity.builder()
-                            .role(ERole.valueOf(ERole.INVITED.name()))
+                            .role(ERole.valueOf(ERole.CITIZEN.name()))
                             .build()))
                     .build();
 
             userRepository.save(userEntity1);
             userRepository.save(userEntity2);
-            userRepository.save(userEntity3);
         };
     }
 }
