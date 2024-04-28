@@ -1,4 +1,4 @@
-package com.citysos.api.shared.infrastructure.documentation;
+package com.citysos.api.shared.infrastructure.configuration.openapi;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OpenApiConfiguration {
+public class OpenApiConfig {
     @Bean
     public OpenAPI cityUpOpenApi() {
         return new OpenAPI()

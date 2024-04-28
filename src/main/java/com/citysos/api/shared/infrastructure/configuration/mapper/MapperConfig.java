@@ -1,4 +1,4 @@
-package com.citysos.api.shared.infrastructure.mapper;
+package com.citysos.api.shared.infrastructure.configuration.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
