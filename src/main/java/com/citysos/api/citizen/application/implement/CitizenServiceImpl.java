@@ -4,26 +4,32 @@ import com.citysos.api.citizen.domain.models.entities.Citizen;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.repositories.CitizenRepository;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CitizenServiceImpl implements CitizenService {
+
     private final CitizenRepository citizenRepository;
     private final ModelMapper modelMapper;
-    public CitizenServiceImpl(CitizenRepository citizenRepository, ModelMapper modelMapper) {
-        this.citizenRepository = citizenRepository;
-        this.modelMapper = modelMapper;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Long createCitizen(CitizenRequest citizenRequest) {
         Citizen citizen = new Citizen();
-        modelMapper.map(citizenRequest, citizen);
-
+        citizen.setEmail(citizenRequest.getEmail());
+        citizen.setUsername(citizenRequest.getUsername());
+        citizen.setPassword(passwordEncoder.encode(citizenRequest.getPassword()));
+        citizen.setName(citizenRequest.getName());
+        citizen.setDni(citizenRequest.getDni());
+        citizen.setPhone(citizenRequest.getPhone());
+        //modelMapper.map(citizenRequest, citizen);
         return citizenRepository.save(citizen).getId();
     }
 

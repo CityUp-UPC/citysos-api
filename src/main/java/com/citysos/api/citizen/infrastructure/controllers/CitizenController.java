@@ -29,9 +29,9 @@ public class CitizenController {
         this.modelMapper = modelMapper;
     }
 
-    //@Transactional
-    //@PostMapping("/sign-up")
-    public ResponseEntity<CitizenResponse> register(@Valid @RequestBody CitizenRequest citizenRequest) {
+    @Transactional
+    @PostMapping("/sign-up")
+    public ResponseEntity<CitizenResponse> citizenSignUp(@Valid @RequestBody CitizenRequest citizenRequest) {
         Long id = citizenService.createCitizen(citizenRequest);
         Citizen citizenCreated = citizenService.getCitizenById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Citizen not found with id: " + id));

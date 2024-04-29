@@ -34,6 +34,7 @@ public class ApiApplication {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+
     @Bean
     CommandLineRunner init() {
         return args -> {
@@ -41,6 +42,9 @@ public class ApiApplication {
                     .email("wilver.ar.dev@gmail.com")
                     .username("wilver-ar")
                     .password(passwordEncoder.encode("1234"))
+                    .phone("123456789")
+                    .dni("72432916")
+                    .name("Wilver Arana R.")
                     .roles(Set.of(RoleEntity.builder()
                             .role(ERole.valueOf(ERole.POLICE.name()))
                             .build()))
@@ -50,6 +54,9 @@ public class ApiApplication {
                     .email("jack.ar.dev@gmail.com")
                     .username("jack-ar")
                     .password(passwordEncoder.encode("1234"))
+                    .phone("123456789")
+                    .dni("72432913")
+                    .name("Jack Arana R.")
                     .roles(Set.of(RoleEntity.builder()
                             .role(ERole.valueOf(ERole.CITIZEN.name()))
                             .build()))

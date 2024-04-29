@@ -1,5 +1,7 @@
 package com.citysos.api.auth.infrastructure.resources.request;
 
+import com.citysos.api.auth.domain.models.entities.RoleEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -11,15 +13,22 @@ import java.util.Set;
 @Getter
 public class UserRequest {
 
-    @Email(message = "Invalid email")
+    @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     private String email;
 
     @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "Password is required")
     private String password;
 
-    private Set<String> roles;
+    @NotBlank(message = "Phone is required")
+    private String phone;
+
+    @NotBlank(message = "DNI is required")
+    private String dni;
+
+    @NotBlank(message = "Name is required")
+    private String name;
 }
