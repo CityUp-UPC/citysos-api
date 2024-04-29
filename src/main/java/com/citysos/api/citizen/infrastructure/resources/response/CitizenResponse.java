@@ -14,26 +14,4 @@ import lombok.Setter;
 @Setter
 public class CitizenResponse {
 
-    private Long id;
-
-    private String email;
-
-    private String username;
-
-    private String password;
-
-    private String phone;
-
-    private String dni;
-
-    private String name;
-    /*
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-     */
-    private String roles;
 }

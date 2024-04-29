@@ -1,6 +1,7 @@
 package com.citysos.api.citizen.infrastructure.controllers;
 
 import com.citysos.api.citizen.domain.models.aggregates.Alert;
+import com.citysos.api.citizen.domain.models.enums.EStatus;
 import com.citysos.api.citizen.domain.services.AlertService;
 import com.citysos.api.citizen.infrastructure.resources.request.AlertRequest;
 import com.citysos.api.citizen.infrastructure.resources.response.AlertResponse;
@@ -13,10 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/alerts", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/alert", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Alerts", description = "The Alerts API")
 public class AlertController {
@@ -30,7 +33,9 @@ public class AlertController {
     @Transactional
     @PostMapping("/emit")
     public ResponseEntity<AlertResponse> emit(@Valid @RequestBody AlertRequest alertRequest) {
-        Long id = alertService.createAlert(alertRequest);
+        Alert alert = new Alert(LocalDateTime.now(), "NO SPECIFIED", EStatus.ACTIVE);
+        //modelMapper.map(alertRequest, alert);
+        Long id = alertService.createAlert(alert);
         Alert alertCreated = alertService.getAlertById(id)
                 .orElseThrow(() -> new RuntimeException("Alert not found with id: " + id));
         AlertResponse alertResponse = modelMapper.map(alertCreated, AlertResponse.class);

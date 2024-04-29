@@ -4,6 +4,7 @@ import com.citysos.api.citizen.domain.models.entities.Citizen;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.repositories.CitizenRepository;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
+import com.citysos.api.shared.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,13 +24,8 @@ public class CitizenServiceImpl implements CitizenService {
     @Override
     public Long createCitizen(CitizenRequest citizenRequest) {
         Citizen citizen = new Citizen();
-        citizen.setEmail(citizenRequest.getEmail());
-        citizen.setUsername(citizenRequest.getUsername());
-        citizen.setPassword(passwordEncoder.encode(citizenRequest.getPassword()));
-        citizen.setName(citizenRequest.getName());
-        citizen.setDni(citizenRequest.getDni());
-        citizen.setPhone(citizenRequest.getPhone());
-        //modelMapper.map(citizenRequest, citizen);
+        modelMapper.map(citizenRequest, citizen);
+
         return citizenRepository.save(citizen).getId();
     }
 
@@ -46,7 +42,7 @@ public class CitizenServiceImpl implements CitizenService {
     @Override
     public void deleteCitizenById(Long id) {
         if (!citizenRepository.existsById(id)) {
-            throw new RuntimeException("Citizen not found with id: " + id);
+            throw new ResourceNotFoundException("Citizen not found with id: " + id);
         }
         citizenRepository.deleteById(id);
     }

@@ -1,12 +1,15 @@
 package com.citysos.api.citizen.application.implement;
 
 import com.citysos.api.citizen.domain.models.aggregates.Alert;
+import com.citysos.api.citizen.domain.models.enums.EStatus;
 import com.citysos.api.citizen.domain.services.AlertService;
 import com.citysos.api.citizen.infrastructure.repositories.AlertRepository;
 import com.citysos.api.citizen.infrastructure.resources.request.AlertRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +23,9 @@ public class AlertServiceImpl implements AlertService {
     }
 
     @Override
-    public Long createAlert(AlertRequest alertRequest) {
-        Alert alert = new Alert();
-        modelMapper.map(alertRequest, alert);
+    public Long createAlert(Alert alertRequest) {
+        Alert alert = new Alert(LocalDateTime.now(), "NO SPECIFIED", EStatus.ACTIVE);
+        //modelMapper.map(alertRequest, alert);
 
         return alertRepository.save(alert).getId();
     }

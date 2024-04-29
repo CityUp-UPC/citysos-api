@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "api/v1/citizens", produces = MediaType.APPLICATION_JSON_VALUE)
+//@RestController
+@RequestMapping(value = "api/v1/citizen", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Citizen", description = "The Citizens API")
 public class CitizenController {
@@ -39,6 +39,7 @@ public class CitizenController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(citizenResponse);
     }
+
 
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
