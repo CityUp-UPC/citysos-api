@@ -1,7 +1,6 @@
 package com.citysos.api.citizen.infrastructure.controllers;
 
 import com.citysos.api.citizen.domain.models.aggregates.Alert;
-import com.citysos.api.citizen.domain.models.enums.EStatus;
 import com.citysos.api.citizen.domain.services.AlertService;
 import com.citysos.api.citizen.infrastructure.resources.request.AlertRequest;
 import com.citysos.api.citizen.infrastructure.resources.response.AlertResponse;
@@ -14,8 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,15 +31,15 @@ public class AlertController {
     @Transactional
     @PostMapping("/emit")
     public ResponseEntity<AlertResponse> emit(@Valid @RequestBody AlertRequest alertRequest) {
-        Alert alert = new Alert(LocalDateTime.now(), "NO SPECIFIED", EStatus.ACTIVE);
-        //modelMapper.map(alertRequest, alert);
-        Long id = alertService.createAlert(alert);
+        Long id = alertService.createAlert(alertRequest);
         Alert alertCreated = alertService.getAlertById(id)
                 .orElseThrow(() -> new RuntimeException("Alert not found with id: " + id));
         AlertResponse alertResponse = modelMapper.map(alertCreated, AlertResponse.class);
+        alertResponse.setUserId(alertCreated.getUser().getId()); // THIS LINE IS FOR GETTING THE USER ID...!!!;,V
 
         return ResponseEntity.status(HttpStatus.CREATED).body(alertResponse);
     }
+
 
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
@@ -49,6 +47,7 @@ public class AlertController {
         Alert alert = alertService.getAlertById(id)
                 .orElseThrow(() -> new RuntimeException("Alert not found with id: " + id));
         AlertResponse alertResponse = modelMapper.map(alert, AlertResponse.class);
+        alertResponse.setUserId(alert.getUser().getId()); // THIS LINE IS FOR GETTING THE USER ID...!!!;,V
 
         return ResponseEntity.status(HttpStatus.OK).body(alertResponse);
     }
@@ -57,8 +56,12 @@ public class AlertController {
     @GetMapping("/record")
     public ResponseEntity<List<AlertResponse>> getAll() {
         List<Alert> alerts = alertService.getAllAlerts();
-        List<AlertResponse> alertResponse = alerts.stream().map(x -> modelMapper.map(x, AlertResponse.class)).toList();
-
+        List<AlertResponse> alertResponse = new ArrayList<>();
+        alerts.forEach(alert -> {
+            AlertResponse response = modelMapper.map(alert, AlertResponse.class);
+            response.setUserId(alert.getUser().getId());
+            alertResponse.add(response);
+        });
         return ResponseEntity.status(HttpStatus.OK).body(alertResponse);
     }
 

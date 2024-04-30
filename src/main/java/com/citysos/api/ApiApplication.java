@@ -5,10 +5,7 @@ import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.auth.domain.models.enums.ERole;
 import com.citysos.api.auth.infrastructure.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,7 +30,6 @@ public class ApiApplication {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
 
     @Bean
     CommandLineRunner init() {

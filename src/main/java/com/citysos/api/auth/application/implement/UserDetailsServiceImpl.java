@@ -23,9 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("The user [" + username + "] not exist."));
-
+        //UserEntity userEntity = userRepository.findByUsername(username)
+                //.orElseThrow(() -> new UsernameNotFoundException("The user [" + username + "] not exist."));
+        UserEntity userEntity = findUser(username);
         Collection<? extends GrantedAuthority> authorities = userEntity.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.getRole().name())))
@@ -38,6 +38,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 true,
                 true,
                 authorities);
+    }
+
+    public UserEntity findUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("The user [" + username + "] not exist."));
     }
 }
 

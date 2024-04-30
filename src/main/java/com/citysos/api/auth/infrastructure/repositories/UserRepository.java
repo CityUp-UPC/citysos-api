@@ -15,6 +15,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u FROM UserEntity u JOIN u.roles r WHERE r.role = ?1")
     List<UserEntity> findUsersByRole(ERole role);
-
-    //List<UserEntity> findUserEntitiesByRoles(String role);
 }

@@ -1,10 +1,10 @@
 package com.citysos.api.auth.domain.models.entities;
 
+import com.citysos.api.citizen.domain.models.aggregates.Alert;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,6 +19,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "id_user")
     private Long id;
 
     @Column(name = "email", unique = true, nullable = false, length = 50)
@@ -38,6 +39,9 @@ public class UserEntity {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Alert> alerts;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
     @JoinTable(

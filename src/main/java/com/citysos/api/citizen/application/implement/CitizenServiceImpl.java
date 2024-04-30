@@ -1,6 +1,7 @@
 package com.citysos.api.citizen.application.implement;
 
-import com.citysos.api.citizen.domain.models.entities.Citizen;
+import com.citysos.api.auth.domain.models.entities.UserEntity;
+import com.citysos.api.auth.domain.models.enums.ERole;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.repositories.CitizenRepository;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
@@ -19,55 +20,42 @@ public class CitizenServiceImpl implements CitizenService {
 
     private final CitizenRepository citizenRepository;
     private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;//Implement ID of passwordEncoder
+
 
     @Override
-    public Long createCitizen(CitizenRequest citizenRequest) {
-        Citizen citizen = new Citizen();
-        modelMapper.map(citizenRequest, citizen);
-
-        return citizenRepository.save(citizen).getId();
+    public Optional<UserEntity> getUserCitizenById(Long id) {
+        return citizenRepository.findById(id)
+                .filter(x -> x.getRoles().stream().anyMatch(y -> y.getRole().equals(ERole.CITIZEN)));
     }
 
     @Override
-    public Optional<Citizen> getCitizenById(Long id) {
-        return citizenRepository.findById(id);
+    public List<UserEntity> getAllUsersCitizens() {
+        return citizenRepository.findAll()
+                .stream()
+                .filter(x -> x.getRoles().stream().anyMatch(y -> y.getRole().equals(ERole.CITIZEN)))
+                .toList();
     }
 
     @Override
-    public List<Citizen> getAllCitizens() {
-        return citizenRepository.findAll();
-    }
-
-    @Override
-    public void deleteCitizenById(Long id) {
-        if (!citizenRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Citizen not found with id: " + id);
+    public void deleteUserCitizenById(Long id) {
+        if (getAllUsersCitizens().stream().noneMatch(x -> x.getId().equals(id))) {
+            throw new ResourceNotFoundException("User citizen not found with id: " + id);
         }
         citizenRepository.deleteById(id);
     }
 
     @Override
-    public Citizen logInCitizen(String email, String password) {
-        Citizen citizen = citizenRepository.findByEmailAndPassword(email, password);
-        return Optional.ofNullable(citizen).orElseThrow(() -> new RuntimeException("Citizen not found with email: " + email));
+    public UserEntity updateUserCitizen(Long id, CitizenRequest citizenRequest) {
+        UserEntity userCitizen = getUserCitizenById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User citizen not found with id: " + id));
+        modelMapper.map(citizenRequest, userCitizen);
+
+        return citizenRepository.save(userCitizen);
     }
 
     @Override
-    public Citizen updateCitizen(Long id, CitizenRequest citizenRequest) {
-        Citizen citizenToUpdate = citizenRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Citizen not found with id: " + id));
-        modelMapper.map(citizenRequest, citizenToUpdate);
+    public void updatePasswordUserCitizen(Long id, String password) {
 
-        return citizenRepository.save(citizenToUpdate);
-    }
-
-    @Override
-    public void updatePassword(Long id, String password) {
-        Citizen citizenToUpdate = citizenRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Citizen not found with id: " + id));
-        citizenToUpdate.setPassword(password);
-
-        citizenRepository.save(citizenToUpdate);
     }
 }

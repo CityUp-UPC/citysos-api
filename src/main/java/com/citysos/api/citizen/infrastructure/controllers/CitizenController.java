@@ -1,11 +1,10 @@
 package com.citysos.api.citizen.infrastructure.controllers;
 
-import com.citysos.api.citizen.domain.models.entities.Citizen;
+import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
 import com.citysos.api.citizen.infrastructure.resources.response.CitizenResponse;
 import com.citysos.api.shared.domain.exceptions.ResourceNotFoundException;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
+@RestController
 @RequestMapping(value = "api/v1/citizen", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Citizen", description = "The Citizens API")
@@ -29,67 +28,42 @@ public class CitizenController {
         this.modelMapper = modelMapper;
     }
 
-    @Transactional
-    @PostMapping("/sign-up")
-    public ResponseEntity<CitizenResponse> citizenSignUp(@Valid @RequestBody CitizenRequest citizenRequest) {
-        Long id = citizenService.createCitizen(citizenRequest);
-        Citizen citizenCreated = citizenService.getCitizenById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Citizen not found with id: " + id));
-        CitizenResponse citizenResponse = modelMapper.map(citizenCreated, CitizenResponse.class);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(citizenResponse);
-    }
-
-
-    @Transactional(readOnly = true)
+    @Transactional//READY...!!!
     @GetMapping("/{id}")
-    public ResponseEntity<CitizenResponse> getById(@PathVariable Long id) {
-        Citizen citizen = citizenService.getCitizenById(id)
+    public ResponseEntity<CitizenResponse> getCitizenById(@PathVariable Long id) {
+        UserEntity userCitizen = citizenService.getUserCitizenById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Citizen not found with id: " + id));
-        CitizenResponse citizenResponse = modelMapper.map(citizen, CitizenResponse.class);
+        CitizenResponse citizenResponse = modelMapper.map(userCitizen, CitizenResponse.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(citizenResponse);
     }
-
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)//READY...!!!
     @GetMapping("/all")
-    public ResponseEntity<List<CitizenResponse>> getAll() {
-        List<Citizen> citizens = citizenService.getAllCitizens();
+    public ResponseEntity<List<CitizenResponse>> getAllCitizens() {
+        List<UserEntity> citizens = citizenService.getAllUsersCitizens();
         List<CitizenResponse> citizenResponse = citizens.stream().map(x -> modelMapper.map(x, CitizenResponse.class)).toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(citizenResponse);
     }
+    @Transactional//READY...!!!
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUserCitizenById(@PathVariable Long id) {
+        citizenService.deleteUserCitizenById(id);
 
-    @Transactional
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @Transactional//READY...!!!
     @PutMapping("/{id}/update-profile")
     public ResponseEntity<CitizenResponse> updateProfile(@PathVariable Long id, @Valid @RequestBody CitizenRequest citizenRequest) {
-        Citizen citizenUpdated = citizenService.updateCitizen(id, citizenRequest);
+        UserEntity citizenUpdated = citizenService.updateUserCitizen(id, citizenRequest);
         CitizenResponse citizenResponse = modelMapper.map(citizenUpdated, CitizenResponse.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(citizenResponse);
     }
-
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        citizenService.deleteCitizenById(id);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @Transactional
-    @PostMapping("/log-in")
-    public ResponseEntity<CitizenResponse> logIn(@RequestParam String email, @RequestParam String password) {
-        Citizen citizen = citizenService.logInCitizen(email, password);
-        CitizenResponse citizenResponse = modelMapper.map(citizen, CitizenResponse.class);
-
-        return ResponseEntity.status(HttpStatus.OK).body(citizenResponse);
-    }
-
-    @Transactional
-    @PutMapping("/{id}/change-password")
+    @Transactional//FALTA IMPLEMENTAR
+    //@PutMapping("/{id}/change-password")
     public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestParam String password) {
-        citizenService.updatePassword(id, password);
+        citizenService.updatePasswordUserCitizen(id, password);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

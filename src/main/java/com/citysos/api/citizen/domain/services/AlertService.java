@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AlertService {
-    Long createAlert(Alert alertRequest);
+    Long createAlert(AlertRequest alertRequest);
     Optional<Alert> getAlertById(Long id);
     List<Alert> getAllAlerts();
     void deleteAlert(Long id);
