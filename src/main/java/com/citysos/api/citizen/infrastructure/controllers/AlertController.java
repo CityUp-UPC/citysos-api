@@ -6,6 +6,7 @@ import com.citysos.api.citizen.infrastructure.resources.request.AlertRequest;
 import com.citysos.api.citizen.infrastructure.resources.response.AlertResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,16 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "api/v1/alert", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Alerts", description = "The Alerts API")
 public class AlertController {
+
     private final AlertService alertService;
     private final ModelMapper modelMapper;
-    public AlertController(AlertService alertService, ModelMapper modelMapper) {
-        this.alertService = alertService;
-        this.modelMapper = modelMapper;
-    }
 
     @Transactional
     @PostMapping("/emit")
@@ -35,11 +34,10 @@ public class AlertController {
         Alert alertCreated = alertService.getAlertById(id)
                 .orElseThrow(() -> new RuntimeException("Alert not found with id: " + id));
         AlertResponse alertResponse = modelMapper.map(alertCreated, AlertResponse.class);
-        alertResponse.setUserId(alertCreated.getUser().getId()); // THIS LINE IS FOR GETTING THE USER ID...!!!;,V
+        alertResponse.setUserId(alertCreated.getUser().getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(alertResponse);
     }
-
 
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
@@ -47,13 +45,13 @@ public class AlertController {
         Alert alert = alertService.getAlertById(id)
                 .orElseThrow(() -> new RuntimeException("Alert not found with id: " + id));
         AlertResponse alertResponse = modelMapper.map(alert, AlertResponse.class);
-        alertResponse.setUserId(alert.getUser().getId()); // THIS LINE IS FOR GETTING THE USER ID...!!!;,V
+        alertResponse.setUserId(alert.getUser().getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(alertResponse);
     }
 
     @Transactional(readOnly = true)
-    @GetMapping("/record")
+    @GetMapping("/history")
     public ResponseEntity<List<AlertResponse>> getAll() {
         List<Alert> alerts = alertService.getAllAlerts();
         List<AlertResponse> alertResponse = new ArrayList<>();

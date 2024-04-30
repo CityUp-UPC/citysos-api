@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CitizenService {
-    Optional<UserEntity> getUserCitizenById(Long id);
+    Long getCitizenId();
+    Optional<UserEntity> getUserCitizen();
     List<UserEntity> getAllUsersCitizens();
-    UserEntity updateUserCitizen(Long id, CitizenRequest citizenRequest);
-    void deleteUserCitizenById(Long id);
-    void updatePasswordUserCitizen(Long id, String password);
+    UserEntity updateUserCitizen(CitizenRequest citizenRequest);
+    void deleteUserCitizen();
+    void updatePasswordUserCitizen(String newPassword, String confirmPassword);
 }

@@ -19,7 +19,6 @@ import java.time.Instant;
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "id_alert")
     private Long id;
 
     @Column(name = "date", nullable = false)
@@ -35,8 +34,8 @@ public class Alert {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    public Alert(UserEntity user, Instant date, String typeOfAlert, EStatus status) {
-        this.user = user;
+    public Alert(UserEntity userEntity, Instant date, String typeOfAlert, EStatus status) {
+        this.user = userEntity;
         this.date = date;
         this.typeOfAlert = typeOfAlert;
         this.status = status;

@@ -3,8 +3,10 @@ package com.citysos.api.auth.application.implement;
 import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.auth.infrastructure.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,9 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        //UserEntity userEntity = userRepository.findByUsername(username)
-                //.orElseThrow(() -> new UsernameNotFoundException("The user [" + username + "] not exist."));
         UserEntity userEntity = findUser(username);
         Collection<? extends GrantedAuthority> authorities = userEntity.getRoles()
                 .stream()
@@ -43,6 +42,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserEntity findUser(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("The user [" + username + "] not exist."));
+    }
+    public UserEntity getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            System.out.println("UserDetailsServiceImpl.getCurrentUser: " + userDetails.getUsername());
+            return findUser(userDetails.getUsername());
+        }
+        else {
+            return null;
+        }
     }
 }
 

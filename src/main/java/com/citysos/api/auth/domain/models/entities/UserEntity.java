@@ -19,7 +19,6 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "id_user")
     private Long id;
 
     @Column(name = "email", unique = true, nullable = false, length = 50)

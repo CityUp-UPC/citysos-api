@@ -1,11 +1,13 @@
 package com.citysos.api.citizen.application.implement;
 
+import com.citysos.api.auth.application.implement.UserDetailsServiceImpl;
 import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.auth.domain.models.enums.ERole;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.repositories.CitizenRepository;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
 import com.citysos.api.shared.domain.exceptions.ResourceNotFoundException;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,13 +22,17 @@ public class CitizenServiceImpl implements CitizenService {
 
     private final CitizenRepository citizenRepository;
     private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;//Implement ID of passwordEncoder
-
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsServiceImpl userDetailsService;
+    
+    @Override
+    public Long getCitizenId() {
+        return userDetailsService.getCurrentUser().getId();
+    }
 
     @Override
-    public Optional<UserEntity> getUserCitizenById(Long id) {
-        return citizenRepository.findById(id)
-                .filter(x -> x.getRoles().stream().anyMatch(y -> y.getRole().equals(ERole.CITIZEN)));
+    public Optional<UserEntity> getUserCitizen() {
+        return citizenRepository.findById(getCitizenId());
     }
 
     @Override
@@ -38,24 +44,28 @@ public class CitizenServiceImpl implements CitizenService {
     }
 
     @Override
-    public void deleteUserCitizenById(Long id) {
-        if (getAllUsersCitizens().stream().noneMatch(x -> x.getId().equals(id))) {
-            throw new ResourceNotFoundException("User citizen not found with id: " + id);
-        }
-        citizenRepository.deleteById(id);
+    public void deleteUserCitizen() {
+        citizenRepository.deleteById(getCitizenId());
     }
 
     @Override
-    public UserEntity updateUserCitizen(Long id, CitizenRequest citizenRequest) {
-        UserEntity userCitizen = getUserCitizenById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User citizen not found with id: " + id));
+    public UserEntity updateUserCitizen(CitizenRequest citizenRequest) {
+        UserEntity userCitizen = getUserCitizen()
+                .orElseThrow(() -> new ResourceNotFoundException("User citizen not found with id: " + getCitizenId()));
         modelMapper.map(citizenRequest, userCitizen);
 
         return citizenRepository.save(userCitizen);
     }
 
     @Override
-    public void updatePasswordUserCitizen(Long id, String password) {
+    public void updatePasswordUserCitizen(String newPassword, String confirmPassword) {
+        if (!newPassword.equals(confirmPassword)) {
+            throw new ValidationException("Passwords do not match");
+        }
+        UserEntity userCitizen = getUserCitizen()
+                .orElseThrow(() -> new ResourceNotFoundException("You have logged in as a citizen"));
+        userCitizen.setPassword(passwordEncoder.encode(confirmPassword));
 
+        citizenRepository.save(userCitizen);
     }
 }
