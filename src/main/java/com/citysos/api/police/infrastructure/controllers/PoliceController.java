@@ -46,4 +46,7 @@ public class PoliceController {
 
         return ResponseEntity.status(HttpStatus.OK).body(policeResponse);
     }
+
+
+
 }

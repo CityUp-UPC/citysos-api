@@ -8,7 +8,6 @@ import java.util.Optional;
 
 
 public interface CitizenService {
-
     Long getCitizenId();
     Optional<UserEntity> getUserCitizen();
     List<UserEntity> getAllUsersCitizens();

@@ -13,9 +13,9 @@ import java.time.Instant;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name = "alerts")
 public class Alert {
     @Id
