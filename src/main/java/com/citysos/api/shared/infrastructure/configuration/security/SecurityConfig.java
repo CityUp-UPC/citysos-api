@@ -4,12 +4,10 @@ import com.citysos.api.shared.infrastructure.configuration.security.jwt.filter.J
 import com.citysos.api.shared.infrastructure.configuration.security.jwt.filter.JwtAuthorizationFilter;
 import com.citysos.api.shared.infrastructure.configuration.security.jwt.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -59,18 +57,6 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/webjars/**"
     };
-    /*
-    @Bean
-    UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("wilverar")
-                .password("1234")
-                .roles()
-                .build());
-
-        return manager;
-    }
-     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
