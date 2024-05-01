@@ -14,13 +14,11 @@ import java.time.Instant;
 public class AlertResponse {
 
     private Long id;
-
     private Long userId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Instant date;
 
     private String typeOfAlert;
-
     private String status;
 }

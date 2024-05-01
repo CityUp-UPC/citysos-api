@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "api/v1/alert", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/alert", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Alerts", description = "The Alerts API")
 public class AlertController {
@@ -38,7 +39,6 @@ public class AlertController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(alertResponse);
     }
-
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
     public ResponseEntity<AlertResponse> getById(@PathVariable Long id) {
@@ -49,7 +49,6 @@ public class AlertController {
 
         return ResponseEntity.status(HttpStatus.OK).body(alertResponse);
     }
-
     @Transactional(readOnly = true)
     @GetMapping("/history")
     public ResponseEntity<List<AlertResponse>> getAll() {
@@ -62,7 +61,6 @@ public class AlertController {
         });
         return ResponseEntity.status(HttpStatus.OK).body(alertResponse);
     }
-
     @Transactional
     @DeleteMapping("/{id}/cancel")
     public ResponseEntity<Void> cancel(@PathVariable Long id) {

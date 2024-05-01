@@ -24,7 +24,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "User", description = "The Users API")
 public class UserController {

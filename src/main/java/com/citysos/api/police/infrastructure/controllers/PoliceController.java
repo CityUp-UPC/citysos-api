@@ -2,7 +2,6 @@ package com.citysos.api.police.infrastructure.controllers;
 
 import com.citysos.api.auth.application.implement.UserDetailsServiceImpl;
 import com.citysos.api.auth.domain.models.entities.UserEntity;
-import com.citysos.api.auth.infrastructure.repositories.UserRepository;
 import com.citysos.api.police.domain.services.PoliceService;
 import com.citysos.api.police.infrastructure.resources.response.PoliceResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,10 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('POLICE')")
-@RequestMapping(value = "api/v1/police", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/police", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Police", description = "The Police API")
 public class PoliceController {

@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CITIZEN')")
-@RequestMapping(value = "api/v1/citizen", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/citizen", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @Tag(name = "Citizen", description = "The Citizens API")
 public class CitizenController {
