@@ -1,15 +1,13 @@
 package com.citysos.api.citizen.infrastructure.resources.request;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class AlertRequest {
 
-    @NotBlank(message = "Type of alert is required")
+    @Schema(description = "Type of alert", example = "SOS")
     private String typeOfAlert;
-
-    @NotBlank(message = "Status is required")
-    private String status;
 }

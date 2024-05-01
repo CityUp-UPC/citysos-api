@@ -1,17 +1,27 @@
-package com.citysos.api.citizen.infrastructure.resources.request;
+package com.citysos.api.auth.infrastructure.resources.request;
 
+import com.citysos.api.auth.domain.models.entities.RoleEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @NoArgsConstructor
 @Getter
-public class CitizenRequest {
+public class UserRequest {
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     private String email;
+
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @NotBlank(message = "Password is required")
+    private String password;
 
     @NotBlank(message = "Phone is required")
     private String phone;
