@@ -13,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+
 @Component
 @Slf4j
 public class JwtUtils {
@@ -33,7 +34,7 @@ public class JwtUtils {
     }
     public boolean isTokenValid(String token) {
         try {
-            Jwts.parser()
+            Jwts.parserBuilder()
                     .setSigningKey(getSignatureKey())
                     .build()
                     .parseClaimsJws(token)
@@ -53,7 +54,7 @@ public class JwtUtils {
         return claimsTFunction.apply(claims);
     }
     public Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSignatureKey())
                 .build()
                 .parseClaimsJws(token)

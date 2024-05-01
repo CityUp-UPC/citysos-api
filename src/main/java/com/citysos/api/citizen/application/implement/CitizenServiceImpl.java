@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class CitizenServiceImpl implements CitizenService {
@@ -24,7 +25,7 @@ public class CitizenServiceImpl implements CitizenService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
-    
+
     @Override
     public Long getCitizenId() {
         return userDetailsService.getCurrentUser().getId();

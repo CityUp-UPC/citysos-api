@@ -1,13 +1,10 @@
 package com.citysos.api.auth.infrastructure.resources.request;
 
-import com.citysos.api.auth.domain.models.entities.RoleEntity;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 
 @NoArgsConstructor
 @Getter

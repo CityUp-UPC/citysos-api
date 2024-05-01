@@ -6,7 +6,9 @@ import com.citysos.api.citizen.infrastructure.resources.request.AlertRequest;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface AlertService {
+
     Long createAlert(AlertRequest alertRequest);
     Optional<Alert> getAlertById(Long id);
     List<Alert> getAllAlerts();

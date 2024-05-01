@@ -2,8 +2,6 @@ package com.citysos.api.shared.infrastructure.configuration.security.jwt.filter;
 
 import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.shared.infrastructure.configuration.security.jwt.utils.JwtUtils;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -30,17 +29,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        UserEntity userEntity = null;
-        String username = "";
-        String password = "";
+        UserEntity userEntity;
+        String username;
+        String password;
 
         try {
             userEntity = new ObjectMapper().readValue(request.getInputStream(), UserEntity.class);
             username = userEntity.getUsername();
             password = userEntity.getPassword();
-        }
-        catch (StreamReadException | DatabindException e) {
-            throw new RuntimeException(e);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
