@@ -1,6 +1,5 @@
 package com.citysos.api.citizen.infrastructure.controllers;
 
-import com.citysos.api.auth.application.implement.UserDetailsServiceImpl;
 import com.citysos.api.auth.domain.models.entities.UserEntity;
 import com.citysos.api.citizen.domain.services.CitizenService;
 import com.citysos.api.citizen.infrastructure.resources.request.CitizenRequest;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
