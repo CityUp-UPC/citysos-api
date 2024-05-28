@@ -4,6 +4,7 @@ import com.citysos.api.auth.resource.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import com.citysos.api.auth.service.AuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,12 @@ public class AuthController {
     @GetMapping("/exist-user/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Integer id) {
         return ResponseEntity.ok(authService.findUserById(id));
+    }
+
+    @PatchMapping("/deviceToken")
+    public ResponseEntity<?> updateDeviceToken(@RequestParam Integer userId, @RequestParam String deviceToken) {
+        authService.updateDeviceToken(userId, deviceToken);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

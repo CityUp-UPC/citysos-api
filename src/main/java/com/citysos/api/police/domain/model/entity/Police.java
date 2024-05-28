@@ -28,6 +28,8 @@ public class Police {
     private String policeIdentifier;
     @NotNull
     private String entityPolice;
+    private String latitude;
+    private String longitude;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)

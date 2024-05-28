@@ -3,9 +3,10 @@ package com.citysos.api.police.api.rest;
 import com.citysos.api.police.domain.model.entity.Police;
 import com.citysos.api.police.domain.service.PoliceService;
 import com.citysos.api.police.mapping.PoliceMapper;
-import com.citysos.api.police.resources.CreatePoliceResource;
-import com.citysos.api.police.resources.PoliceResource;
-import com.citysos.api.police.resources.RequestJoinIncident;
+import com.citysos.api.police.resources.police.CreatePoliceResource;
+import com.citysos.api.police.resources.police.PoliceResource;
+import com.citysos.api.police.resources.police.RequestJoinIncident;
+import com.citysos.api.police.resources.police.UpdateLocationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Polices", description = "Create, Read, Update and delete polices entities")
 @RestController
@@ -92,6 +92,18 @@ public class PoliceController {
     public ResponseEntity<?> requestReinforcements(@PathVariable Integer incidentId){
         policeService.requestReinforcements(incidentId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("{id}/location")
+    public ResponseEntity<?> updateLocation(@PathVariable Integer id, @RequestBody UpdateLocationRequest request) {
+        policeService.updateLocation(id, request.getLatitude(), request.getLongitude());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<?> updateInService(@PathVariable Integer id) {
+        policeService.updateInService(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

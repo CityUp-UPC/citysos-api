@@ -34,8 +34,14 @@ public class AuthService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-            UserDetails user = userRepository.findByUsername(request.getUsername())
+            User user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+
+            userRepository.findById(user.getId())
+                    .ifPresent(userToUpdate -> {
+                        userToUpdate.setDeviceToken(request.getDeviceToken());
+                        userRepository.save(userToUpdate);
+                    });
 
             String token = jwtService.getToken(user);
             return AuthResponse.builder().token(token).build();
@@ -78,6 +84,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
                 .dni(request.getDni())
+                .deviceToken(request.getDeviceToken())
                 .role(Role.POLICE)
                 .build();
 
@@ -109,6 +116,7 @@ public class AuthService {
                 .phoneNumber(request.getPhoneNumber())
                 .dni(request.getDni())
                 .role(Role.USER)
+                .deviceToken(request.getDeviceToken())
                 .build();
 
         userRepository.save(user);
@@ -125,30 +133,14 @@ public class AuthService {
 
     }
 
-
-//    public Integer registerClient(RegisterRequest request) {
-//        User user = User.builder()
-//                .username(request.getUsername())
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .gymName(request.getGymName())
-//                .phoneNumber(request.getPhoneNumber())
-//                .address(request.getAddress())
-//                .city(request.getCity())
-//                .role(Role.USER)
-//                .build();
-//
-//
-//
-//         userRepository.save(user);/*AuthResponse.builder()
-//                .token(jwtService.getToken(user))
-//                .build();*/
-//
-//        return user.getId();
-//    }
-
     public boolean findUserById(Integer id) {
         return userRepository.existsById(id);
     }
 
+    public void updateDeviceToken(Integer userId, String deviceToken) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+        user.setDeviceToken(deviceToken);
+        userRepository.save(user);
+    }
 }

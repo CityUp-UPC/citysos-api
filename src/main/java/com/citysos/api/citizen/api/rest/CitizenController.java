@@ -5,7 +5,7 @@ import com.citysos.api.citizen.domain.model.service.CitizenService;
 import com.citysos.api.citizen.mapping.CitizenMapper;
 import com.citysos.api.citizen.resources.CitizenResource;
 import com.citysos.api.incident.domain.service.IncidentService;
-import com.citysos.api.police.resources.PoliceResource;
+import com.citysos.api.police.resources.police.PoliceResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

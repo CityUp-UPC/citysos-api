@@ -1,4 +1,4 @@
-package com.citysos.api.police.resources;
+package com.citysos.api.police.resources.police;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class RequestJoinIncident {
-    private Integer incidentId;
+@AllArgsConstructor
+public class UpdateLocationRequest {
+    String latitude;
+    String longitude;
 }

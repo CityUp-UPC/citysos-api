@@ -1,13 +1,10 @@
 package com.citysos.api.incident.api.rest;
 
-import com.citysos.api.citizen.domain.model.service.CitizenService;
 import com.citysos.api.incident.domain.entity.Incident;
 import com.citysos.api.incident.domain.service.IncidentService;
 import com.citysos.api.incident.mapping.IncidentMapper;
 import com.citysos.api.incident.resources.CreateIncidentResource;
 import com.citysos.api.incident.resources.IncidentResource;
-import com.citysos.api.police.resources.PoliceResource;
-import com.citysos.api.shared.exception.CustomException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -95,4 +92,5 @@ public class IncidentController {
         //System.out.println("EL INCIDENT ID ES: " + this.mapper.toModel(resource).getId());
         return new ResponseEntity<>( this.mapper.toResource(incidentService.save(this.mapper.toModel(resource), resource.getCitizenId())), HttpStatus.CREATED);
     }
+
 }

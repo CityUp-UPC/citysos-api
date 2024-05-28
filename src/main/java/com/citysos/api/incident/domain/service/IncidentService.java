@@ -15,5 +15,7 @@ public interface IncidentService {
     Optional<Incident> fetchById(Integer id);
     Incident save(Incident incident, Integer citizenId);
 
+    void notifyNearByPolices(Incident incident, Integer radius);
+
 
 }

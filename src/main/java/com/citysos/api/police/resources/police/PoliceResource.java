@@ -1,4 +1,4 @@
-package com.citysos.api.police.resources;
+package com.citysos.api.police.resources.police;
 
 import com.citysos.api.auth.domain.model.entity.User;
 import jakarta.validation.constraints.NotNull;
@@ -9,17 +9,11 @@ import lombok.*;
 @With
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatePoliceResource {
-    @NotNull
+public class PoliceResource {
+    private Integer id;
     private String assignDistrict;
-
     private String policeRank;
-    @NotNull
     private String policeIdentifier;
-
-    @NotNull
     private String entityPolice;
-
-    @NotNull
     private User user;
 }

@@ -17,4 +17,10 @@ public interface PoliceService {
     void completedIncident(Integer incidentId);
 
     void requestReinforcements(Integer incidentId);
+
+    void updateLocation(Integer id, String latitude, String longitude);
+
+    List<Police> findNearbyPolices(double incidentLat, double incidentLon, Integer radius);
+
+    void updateInService(Integer id);
 }

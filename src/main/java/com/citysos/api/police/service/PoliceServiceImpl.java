@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PoliceServiceImpl implements PoliceService {
@@ -83,5 +84,46 @@ public class PoliceServiceImpl implements PoliceService {
         }
     }
 
+    @Override
+    public void updateLocation(Integer id, String latitude, String longitude) {
+        Police police = policeRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Police not found", HttpStatus.NOT_FOUND));
+        police.setLatitude(latitude);
+        police.setLongitude(longitude);
+        policeRepository.save(police);
+    }
 
+    @Override
+    public List<Police> findNearbyPolices(double incidentLat, double incidentLon, Integer radius) {
+        return policeRepository.findPoliceInService().stream()
+                .filter(police -> {
+                    double policeLat = Double.parseDouble(police.getLatitude());
+                    double policeLon = Double.parseDouble(police.getLongitude());
+                    double distance = calculateDistance(incidentLat, incidentLon, policeLat, policeLon);
+                    return distance <= radius; // Define the range in km
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateInService(Integer id) {
+        if(policeRepository.findById(id).get().getInService()){
+            policeRepository.OffInService(id);
+        }
+        else {
+            policeRepository.OnInService(id);
+        }
+
+    }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radius of the earth in km
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
+    }
 }

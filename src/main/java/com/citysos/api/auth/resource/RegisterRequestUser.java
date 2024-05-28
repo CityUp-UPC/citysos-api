@@ -19,6 +19,7 @@ public class RegisterRequestUser {
     String password;
     String phoneNumber;
     String dni;
+    String deviceToken;
 
     String district;
 }

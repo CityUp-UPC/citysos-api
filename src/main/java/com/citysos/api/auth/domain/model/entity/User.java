@@ -39,6 +39,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     Role role;
 
+    @Column(nullable = true)
+    String deviceToken;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

@@ -17,6 +17,7 @@ public class RegisterRequestPolice {
     String password;
     String phoneNumber;
     String dni;
+    String deviceToken;
 
     String assignedDistrict;
     //Boolean inService;

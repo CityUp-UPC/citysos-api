@@ -1,8 +1,8 @@
 package com.citysos.api.police.mapping;
 
 import com.citysos.api.police.domain.model.entity.Police;
-import com.citysos.api.police.resources.CreatePoliceResource;
-import com.citysos.api.police.resources.PoliceResource;
+import com.citysos.api.police.resources.police.CreatePoliceResource;
+import com.citysos.api.police.resources.police.PoliceResource;
 import com.citysos.api.shared.mapping.EnhancedModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
