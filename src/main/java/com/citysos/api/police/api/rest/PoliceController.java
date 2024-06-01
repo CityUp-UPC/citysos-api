@@ -129,21 +129,18 @@ public class PoliceController {
                        @RequestParam("files") List<MultipartFile> files,
                        @PathVariable Integer policeId) {
 
-        // Obtener la entidad Police
         Optional<Police> policeOptional = policeService.fetchById(policeId);
         if (!policeOptional.isPresent()) {
             throw new RuntimeException("Police not found");
         }
         Police police = policeOptional.get();
 
-        // Crea la entidad New
         CreateNewResource aux = new CreateNewResource();
         aux.setDescription(description);
         aux.setGivenPolice(police);
 
         New newSaved = newService.save(this.newMapper.toModel(aux));
 
-        // Subir imágenes y asociarlas a la entidad New
         List<Image> images = files.stream().map(file -> {
             String imageUrl = imageService.uploadImage(file);
             Image image = new Image();

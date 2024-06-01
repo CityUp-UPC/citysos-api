@@ -1,6 +1,7 @@
 package com.citysos.api.citizen.domain.model.entity;
 
 import com.citysos.api.police.domain.model.entity.New;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     private Citizen citizen;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "new_id", nullable = false)
     private New news;

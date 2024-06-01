@@ -16,7 +16,7 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable Integer givenNew) {
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         String imageUrl = imageService.uploadImage(file);
         if (imageUrl.equals("Error uploading image")) {
             return ResponseEntity.status(500).body("Failed to upload image");
