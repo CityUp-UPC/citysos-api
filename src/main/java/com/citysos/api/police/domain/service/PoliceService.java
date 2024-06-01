@@ -2,6 +2,7 @@ package com.citysos.api.police.domain.service;
 
 import com.citysos.api.police.domain.model.entity.Police;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

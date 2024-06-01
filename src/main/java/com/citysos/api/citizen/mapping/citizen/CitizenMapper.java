@@ -1,8 +1,8 @@
-package com.citysos.api.citizen.mapping;
+package com.citysos.api.citizen.mapping.citizen;
 
 import com.citysos.api.citizen.domain.model.entity.Citizen;
-import com.citysos.api.citizen.resources.CitizenResource;
-import com.citysos.api.citizen.resources.CreateCitizenResource;
+import com.citysos.api.citizen.resources.citizen.CitizenResource;
+import com.citysos.api.citizen.resources.citizen.CreateCitizenResource;
 import com.citysos.api.shared.mapping.EnhancedModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

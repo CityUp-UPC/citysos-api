@@ -1,17 +1,21 @@
 package com.citysos.api.police.resources.news;
 
-import com.citysos.api.police.domain.model.entity.Police;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 
 @Getter
 @Setter
 @With
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateNewResource {
+public class CreateImageNewResource {
     @NotNull
     private String description;
-    @NotNull
-    private Police givenPolice;
+
+    private List<MultipartFile> files;
 }
+

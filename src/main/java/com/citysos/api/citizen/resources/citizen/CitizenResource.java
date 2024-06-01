@@ -1,4 +1,4 @@
-package com.citysos.api.citizen.resources;
+package com.citysos.api.citizen.resources.citizen;
 
 import com.citysos.api.auth.domain.model.entity.User;
 import lombok.AllArgsConstructor;

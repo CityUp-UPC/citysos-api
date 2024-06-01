@@ -1,10 +1,10 @@
-package com.citysos.api.citizen.mapping;
+package com.citysos.api.police.mapping.news;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration("citizenMappingConfiguration")
+@Configuration("newsMappingConfiguration")
 public class MappingConfiguration {
     @Bean
-    public CitizenMapper citizenMapper(){ return new CitizenMapper(); }
+    public NewMapper newMapper(){ return new NewMapper(); }
 }

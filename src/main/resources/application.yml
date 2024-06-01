@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/city_up?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
-    password: root
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -35,4 +35,4 @@ jwt:
 logging:
   level:
     org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE
+    org.hibernate.type: TRACE=

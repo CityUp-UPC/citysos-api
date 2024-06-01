@@ -1,8 +1,17 @@
 package com.citysos.api.police.api.rest;
 
+import com.citysos.api.police.domain.model.entity.Image;
+import com.citysos.api.police.domain.model.entity.New;
 import com.citysos.api.police.domain.model.entity.Police;
+import com.citysos.api.police.domain.service.ImageService;
+import com.citysos.api.police.domain.service.NewService;
 import com.citysos.api.police.domain.service.PoliceService;
-import com.citysos.api.police.mapping.PoliceMapper;
+import com.citysos.api.police.mapping.image.ImageMapper;
+import com.citysos.api.police.mapping.news.NewMapper;
+import com.citysos.api.police.mapping.police.PoliceMapper;
+import com.citysos.api.police.resources.news.CreateImageNewResource;
+import com.citysos.api.police.resources.news.CreateNewResource;
+import com.citysos.api.police.resources.news.NewResource;
 import com.citysos.api.police.resources.police.CreatePoliceResource;
 import com.citysos.api.police.resources.police.PoliceResource;
 import com.citysos.api.police.resources.police.RequestJoinIncident;
@@ -16,8 +25,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Tag(name = "Polices", description = "Create, Read, Update and delete polices entities")
 @RestController
@@ -25,7 +38,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PoliceController {
     private final PoliceService policeService;
+    private final ImageService imageService;
+    private final NewService newService;
     private final PoliceMapper mapper;
+    private final ImageMapper imageMapper;
+    private final NewMapper newMapper;
 
     @Operation(summary = "Get all registered polices", responses = {
             @ApiResponse(description = "Successfully fetched all polices",
@@ -104,6 +121,42 @@ public class PoliceController {
     public ResponseEntity<?> updateInService(@PathVariable Integer id) {
         policeService.updateInService(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("{policeId}/news")
+    public New saveNew(@RequestParam("description") String description,
+                       @RequestParam("files") List<MultipartFile> files,
+                       @PathVariable Integer policeId) {
+
+        // Obtener la entidad Police
+        Optional<Police> policeOptional = policeService.fetchById(policeId);
+        if (!policeOptional.isPresent()) {
+            throw new RuntimeException("Police not found");
+        }
+        Police police = policeOptional.get();
+
+        // Crea la entidad New
+        CreateNewResource aux = new CreateNewResource();
+        aux.setDescription(description);
+        aux.setGivenPolice(police);
+
+        New newSaved = newService.save(this.newMapper.toModel(aux));
+
+        // Subir imágenes y asociarlas a la entidad New
+        List<Image> images = files.stream().map(file -> {
+            String imageUrl = imageService.uploadImage(file);
+            Image image = new Image();
+            image.setUrl(imageUrl);
+            image.setNews(newSaved);
+            return imageService.save(image);
+        }).collect(Collectors.toList());
+
+        // Asociar imágenes a la entidad New y guardar
+        newSaved.setImages(images);
+        newService.update(newSaved);
+
+        return newSaved;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.citysos.api.police.mapping;
+package com.citysos.api.police.mapping.police;
 
 import com.citysos.api.police.domain.model.entity.Police;
 import com.citysos.api.police.resources.police.CreatePoliceResource;

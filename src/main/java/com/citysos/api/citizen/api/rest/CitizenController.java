@@ -2,8 +2,11 @@ package com.citysos.api.citizen.api.rest;
 
 import com.citysos.api.citizen.domain.model.entity.Citizen;
 import com.citysos.api.citizen.domain.model.service.CitizenService;
-import com.citysos.api.citizen.mapping.CitizenMapper;
-import com.citysos.api.citizen.resources.CitizenResource;
+import com.citysos.api.citizen.domain.model.service.CommentService;
+import com.citysos.api.citizen.mapping.citizen.CitizenMapper;
+import com.citysos.api.citizen.mapping.comment.CommentMapper;
+import com.citysos.api.citizen.resources.citizen.CitizenResource;
+import com.citysos.api.citizen.resources.comment.CommentResource;
 import com.citysos.api.incident.domain.service.IncidentService;
 import com.citysos.api.police.resources.police.PoliceResource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +30,9 @@ import java.util.Optional;
 public class CitizenController {
     private final CitizenService citizenService;
     private final IncidentService incidentService;
+
     private final CitizenMapper mapper;
+
 
     @Operation(summary = "Get all registered citizens", responses = {
             @ApiResponse(description = "Successfully fetched all citizens",
@@ -55,4 +60,5 @@ public class CitizenController {
     public CitizenResource fetchById(@PathVariable Integer id) {
         return this.mapper.toResource(citizenService.fetchById(id).get());
     }
+
 }
