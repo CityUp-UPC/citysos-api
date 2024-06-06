@@ -14,9 +14,6 @@ WORKDIR /app
 # Copiar el JAR construido en la imagen final
 COPY --from=build /app/target/citysos-0.0.1-SNAPSHOT.jar app.jar
 
-# Copiar el archivo de servicio de cuenta de Firebase al contenedor
-COPY src/main/resources/firebase-service-account.json /app/firebase-service-account.json
-
 # Definir ARGs que serán pasados durante el build
 ARG RAILWAY_DB_HOST
 ARG RAILWAY_DB_PORT
