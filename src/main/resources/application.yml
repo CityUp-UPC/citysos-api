@@ -13,22 +13,21 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:mysql://localhost:3306/city_up?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
-    username: root
-    password: root
+    url: jdbc:mysql://${RAILWAY_DB_HOST}:${RAILWAY_DB_PORT}/${RAILWAY_DB_NAME}?useSSL=false&serverTimezone=UTC
+    username: ${RAILWAY_DB_USERNAME}
+    password: ${RAILWAY_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
-
     open-in-view: false
     show-sql: true
     properties:
       hibernate:
         jdbc:
           time_zone: UTC
+
 
 jwt:
   secret:
@@ -39,6 +38,4 @@ jwt:
 logging:
   level:
     org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE=
-
-
+    org.hibernate.type: TRACE
