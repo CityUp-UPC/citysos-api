@@ -10,20 +10,22 @@ import com.google.cloud.storage.StorageOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 @SpringBootApplication
 public class CitysosApiApplication {
 
     @Bean
     public FirebaseApp initializeFirebaseApp() throws IOException {
+        String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource("firebase-service-account.json").getInputStream());
+                .fromStream(new ByteArrayInputStream(Base64.getDecoder().decode(firebaseCredentials)));
         FirebaseOptions firebaseOptions = FirebaseOptions.builder()
                 .setCredentials(googleCredentials)
-                .setStorageBucket("citysos-api.appspot.com")
+                .setStorageBucket(System.getenv("FIREBASE_STORAGE_BUCKET"))
                 .build();
         return FirebaseApp.initializeApp(firebaseOptions);
     }
@@ -40,8 +42,9 @@ public class CitysosApiApplication {
 
     @Bean
     public Storage storage() throws IOException {
+        String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
         return StorageOptions.newBuilder()
-                .setCredentials(GoogleCredentials.fromStream(new ClassPathResource("firebase-service-account.json").getInputStream()))
+                .setCredentials(GoogleCredentials.fromStream(new ByteArrayInputStream(Base64.getDecoder().decode(firebaseCredentials))))
                 .build()
                 .getService();
     }
