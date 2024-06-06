@@ -14,15 +14,14 @@ WORKDIR /app
 # Copiar el JAR construido en la imagen final
 COPY --from=build /app/target/citysos-0.0.1-SNAPSHOT.jar app.jar
 
-# Copiar el archivo de servicio de cuenta de Firebase al contenedor
-COPY src/main/resources/firebase-service-account.json /app/firebase-service-account.json
-
 # Definir ARGs que serán pasados durante el build
 ARG RAILWAY_DB_HOST
 ARG RAILWAY_DB_PORT
 ARG RAILWAY_DB_NAME
 ARG RAILWAY_DB_USERNAME
 ARG RAILWAY_DB_PASSWORD
+ARG FIREBASE_CREDENTIALS
+ARG FIREBASE_STORAGE_BUCKET
 
 # Establecer las variables de entorno usando los ARGs
 ENV RAILWAY_DB_HOST=$RAILWAY_DB_HOST
@@ -30,6 +29,8 @@ ENV RAILWAY_DB_PORT=$RAILWAY_DB_PORT
 ENV RAILWAY_DB_NAME=$RAILWAY_DB_NAME
 ENV RAILWAY_DB_USERNAME=$RAILWAY_DB_USERNAME
 ENV RAILWAY_DB_PASSWORD=$RAILWAY_DB_PASSWORD
+ENV FIREBASE_CREDENTIALS=$FIREBASE_CREDENTIALS
+ENV FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET
 
 # Exponer el puerto de la aplicación
 EXPOSE 8080
