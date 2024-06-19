@@ -31,11 +31,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     public AuthResponse login(LoginRequest request) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-
             User user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             userRepository.findById(user.getId())
                     .ifPresent(userToUpdate -> {
@@ -43,7 +43,7 @@ public class AuthService {
                         userRepository.save(userToUpdate);
                     });
 
-            String token = jwtService.getToken(user);
+            String token = jwtService.getToken(user, user.getId());
             return AuthResponse.builder().token(token).build();
         } catch (Exception ex) {
             throw new CustomException("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
@@ -59,16 +59,16 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        UserDetails user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
 
-        userRepository.findById(((User) user).getId())
+        userRepository.findById(user.getId())
                 .ifPresent(userToUpdate -> {
                     userToUpdate.setPassword(passwordEncoder.encode(request.getNewPassword()));
                     userRepository.save(userToUpdate);
                 });
 
-        String token = jwtService.getToken(user);
+        String token = jwtService.getToken(user, user.getId());
         return AuthResponse.builder()
                 .token(token)
                 .build();
@@ -101,7 +101,7 @@ public class AuthService {
         policeRepository.save(police);
 
         return AuthResponse.builder()
-                .token(jwtService.getToken(user))
+                .token(jwtService.getToken(user, user.getId()))
                 .build();
 
     }
@@ -128,7 +128,7 @@ public class AuthService {
         citizenRepository.save(citizen);
 
         return AuthResponse.builder()
-                .token(jwtService.getToken(user))
+                .token(jwtService.getToken(user, user.getId()))
                 .build();
 
     }
