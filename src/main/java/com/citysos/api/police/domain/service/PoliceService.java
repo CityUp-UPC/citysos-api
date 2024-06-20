@@ -24,4 +24,6 @@ public interface PoliceService {
     List<Police> findNearbyPolices(double incidentLat, double incidentLon, Integer radius);
 
     void updateInService(Integer id);
+
+    Police fetchByUserId(Integer userId);
 }

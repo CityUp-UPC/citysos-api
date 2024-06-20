@@ -3,6 +3,7 @@ package com.citysos.api.citizen.service;
 import com.citysos.api.citizen.domain.model.entity.Citizen;
 import com.citysos.api.citizen.domain.model.persistence.CitizenRepository;
 import com.citysos.api.citizen.domain.model.service.CitizenService;
+import com.citysos.api.citizen.resources.citizen.CitizenResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class CitizenServiceImpl implements CitizenService {
     @Override
     public Citizen save(Citizen citizen) {
         return citizenRepository.save(citizen);
+    }
+
+    @Override
+    public Citizen fetchByUserId(Integer userId) {
+        return citizenRepository.findByUserId(userId);
     }
 }

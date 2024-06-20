@@ -1,5 +1,6 @@
 package com.citysos.api.police.api.rest;
 
+import com.citysos.api.citizen.domain.model.entity.Citizen;
 import com.citysos.api.police.domain.model.entity.Image;
 import com.citysos.api.police.domain.model.entity.New;
 import com.citysos.api.police.domain.model.entity.Police;
@@ -94,7 +95,7 @@ public class PoliceController {
                     responseCode = "202",
                     content = @Content(mediaType = "application/json"))
     })
-    @GetMapping("/incident/{incidentId}")
+    @PutMapping("/incident/{incidentId}")
     public ResponseEntity<?> completedIncident(@PathVariable Integer incidentId){
         policeService.completedIncident(incidentId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -154,6 +155,17 @@ public class PoliceController {
         newService.update(newSaved);
 
         return newSaved;
+    }
+
+    @Operation(summary = "Get a police by user id", responses = {
+            @ApiResponse(description = "Successfully fetched citizen by ser id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Police.class)))
+    })
+    @GetMapping("user/{id}")
+    public Police fetchByUserId(@PathVariable Integer id) {
+        return policeService.fetchByUserId(id);
     }
 
 }

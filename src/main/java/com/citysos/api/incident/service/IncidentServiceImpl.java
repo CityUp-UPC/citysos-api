@@ -7,12 +7,10 @@ import com.citysos.api.incident.domain.service.IncidentService;
 import com.citysos.api.notification.domain.entity.NotificationMessage;
 import com.citysos.api.notification.service.FirebaseMessagingService;
 import com.citysos.api.police.domain.model.entity.Police;
-import com.citysos.api.police.domain.persistence.PoliceRepository;
 import com.citysos.api.police.domain.service.PoliceService;
 import com.citysos.api.shared.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -109,5 +107,8 @@ public class IncidentServiceImpl implements IncidentService {
         }
     }
 
-
+    @Override
+    public List<Incident> getPendingIncidentsByCitizenId(Integer citizenId) {
+        return incidentRepository.findByStatusPendingByCitizenId(citizenId);
+    }
 }

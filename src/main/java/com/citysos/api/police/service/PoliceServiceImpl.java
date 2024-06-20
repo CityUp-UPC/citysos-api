@@ -125,5 +125,8 @@ public class PoliceServiceImpl implements PoliceService {
 
     }
 
-
+    @Override
+    public Police fetchByUserId(Integer userId) {
+        return policeRepository.findByUserId(userId);
+    }
 }

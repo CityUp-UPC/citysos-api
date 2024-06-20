@@ -17,5 +17,7 @@ public interface IncidentService {
 
     void notifyNearByPolices(Incident incident, Integer radius);
 
+    List<Incident> getPendingIncidentsByCitizenId(Integer citizenId);
+
 
 }

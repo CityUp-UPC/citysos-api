@@ -22,4 +22,7 @@ public interface PoliceRepository extends JpaRepository<Police, Integer> {
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE polices SET in_service = 1 WHERE id = :id")
     void OnInService(Integer id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM polices WHERE user_id = :userId")
+    Police findByUserId(Integer userId);
 }

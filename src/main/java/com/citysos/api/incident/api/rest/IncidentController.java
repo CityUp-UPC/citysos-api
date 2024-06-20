@@ -93,4 +93,16 @@ public class IncidentController {
         return new ResponseEntity<>( this.mapper.toResource(incidentService.save(this.mapper.toModel(resource), resource.getCitizenId())), HttpStatus.CREATED);
     }
 
+
+    @Operation(summary = "Get pending incidents by citizen id", responses = {
+            @ApiResponse(description = "Successfully fetched all pending incidents by citizen id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IncidentResource.class)))
+    })
+    @GetMapping("/pending/{citizenId}")
+    public List<Incident> fetchPendingByCitizenId(@PathVariable Integer citizenId) {
+        return incidentService.getPendingIncidentsByCitizenId(citizenId);
+    }
+
 }

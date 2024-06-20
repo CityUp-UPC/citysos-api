@@ -38,7 +38,7 @@ public class CitizenController {
             @ApiResponse(description = "Successfully fetched all citizens",
                     responseCode = "201",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PoliceResource.class)))
+                            schema = @Schema(implementation = Citizen.class)))
     })
     @GetMapping
     public List<Citizen> fetchAll() {
@@ -54,11 +54,21 @@ public class CitizenController {
             @ApiResponse(description = "Successfully fetched citizen by id",
                     responseCode = "201",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PoliceResource.class)))
+                            schema = @Schema(implementation = CitizenResource.class)))
     })
     @GetMapping("{id}")
     public CitizenResource fetchById(@PathVariable Integer id) {
         return this.mapper.toResource(citizenService.fetchById(id).get());
     }
 
+    @Operation(summary = "Get a citizen by user id", responses = {
+            @ApiResponse(description = "Successfully fetched citizen by ser id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Citizen.class)))
+    })
+    @GetMapping("user/{id}")
+    public Citizen fetchByUserId(@PathVariable Integer id) {
+        return citizenService.fetchByUserId(id);
+    }
 }
