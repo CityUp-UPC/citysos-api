@@ -10,14 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FirebaseMessagingService {
-    @Autowired
-    private FirebaseMessaging firebaseMessaging;
 
-    public FirebaseMessagingService(FirebaseMessaging firebaseMessaging){
+    private final FirebaseMessaging firebaseMessaging;
+
+    @Autowired
+    public FirebaseMessagingService(FirebaseMessaging firebaseMessaging) {
         this.firebaseMessaging = firebaseMessaging;
     }
 
-    public String sendNotificationByToken(NotificationMessage notificationMessage){
+    public String sendNotificationByToken(NotificationMessage notificationMessage) {
         Notification notification = Notification
                 .builder()
                 .setTitle(notificationMessage.getTitle())
@@ -33,7 +34,7 @@ public class FirebaseMessagingService {
         try {
             firebaseMessaging.send(message);
             return "Success Sending Notification";
-        } catch (FirebaseMessagingException e){
+        } catch (FirebaseMessagingException e) {
             e.printStackTrace();
             return "Error Sending Notification";
         }

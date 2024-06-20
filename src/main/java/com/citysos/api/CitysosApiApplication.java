@@ -20,14 +20,18 @@ public class CitysosApiApplication {
 
     @Bean
     public FirebaseApp initializeFirebaseApp() throws IOException {
-        String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ByteArrayInputStream(Base64.getDecoder().decode(firebaseCredentials)));
-        FirebaseOptions firebaseOptions = FirebaseOptions.builder()
-                .setCredentials(googleCredentials)
-                .setStorageBucket(System.getenv("FIREBASE_STORAGE_BUCKET"))
-                .build();
-        return FirebaseApp.initializeApp(firebaseOptions);
+        if (FirebaseApp.getApps().isEmpty()) {
+            String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
+            GoogleCredentials googleCredentials = GoogleCredentials
+                    .fromStream(new ByteArrayInputStream(Base64.getDecoder().decode(firebaseCredentials)));
+            FirebaseOptions firebaseOptions = FirebaseOptions.builder()
+                    .setCredentials(googleCredentials)
+                    .setStorageBucket(System.getenv("FIREBASE_STORAGE_BUCKET"))
+                    .build();
+            return FirebaseApp.initializeApp(firebaseOptions);
+        } else {
+            return FirebaseApp.getInstance();
+        }
     }
 
     @Bean

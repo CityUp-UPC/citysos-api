@@ -1,6 +1,7 @@
 package com.citysos.api.incident.resources;
 
 import com.citysos.api.citizen.domain.model.entity.Citizen;
+import com.citysos.api.incident.domain.entity.Feed;
 import com.citysos.api.incident.domain.entity.Status;
 import com.citysos.api.police.domain.model.entity.Police;
 import jakarta.persistence.*;
@@ -36,4 +37,6 @@ public class IncidentResource {
     private Citizen citizen;
 
     private List<Police> police;
+
+    private Feed feed;
 }
