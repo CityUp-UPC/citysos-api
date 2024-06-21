@@ -44,6 +44,6 @@ public interface IncidentRepository extends JpaRepository<Incident, Integer> {
     @Query(nativeQuery = true, value = "SELECT COUNT(*) > 0 FROM incident_police WHERE incident_id = :incidentId AND police_id = :policeId")
     int existsPoliceInIncident(Integer policeId, Integer incidentId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status = 'PENDIENT' AND citizen_id = :citizenId")
+    @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status != 'COMPLETED' AND citizen_id = :citizenId")
     List<Incident> findByStatusPendingByCitizenId(Integer citizenId);
 }

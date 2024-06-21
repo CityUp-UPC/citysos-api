@@ -65,7 +65,7 @@ public class PoliceServiceImpl implements PoliceService {
     @Override
     public void completedIncident(Integer incidentId) {
         String aux = incidentRepository.findById(incidentId).get().getStatus().toString();
-        if (!aux.equals("COMPLETED") && !aux.equals("PENDIENT")) { //if (!aux.equals(Status.COMPLETED.toString()) && !aux.equals(Status.PENDIENT.toString())) {
+        if (!aux.equals("COMPLETED")) { //if (!aux.equals(Status.COMPLETED.toString()) && !aux.equals(Status.PENDIENT.toString())) {
             incidentRepository.completedIncident(incidentId);
             throw new CustomException("Incident successfully completed", HttpStatus.ACCEPTED);
         } else {
