@@ -37,6 +37,17 @@ public class IncidentController {
         return incidentService.fetchAll();
     }
 
+    @Operation(summary = "Get all near incidents by km", responses = {
+            @ApiResponse(description = "Successfully fetched near incidents by km",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Incident.class)))
+    })
+    @GetMapping("/near/{km}")
+    public List<Incident> fetchByNearCitizen(@RequestParam Double latitude, @RequestParam Double longitude, @PathVariable Integer km) {
+        return incidentService.fetchByNearCitizen(latitude, longitude, km);
+    }
+
     @Operation(summary = "Get a incident by id", responses = {
             @ApiResponse(description = "Successfully fetched incident by id",
                     responseCode = "201",
@@ -92,6 +103,23 @@ public class IncidentController {
         //System.out.println("EL INCIDENT ID ES: " + this.mapper.toModel(resource).getId());
         return new ResponseEntity<>( this.mapper.toResource(incidentService.save(this.mapper.toModel(resource), resource.getCitizenId())), HttpStatus.CREATED);
     }
+
+    @Operation(summary = "Delete an incident by id", responses = {
+            @ApiResponse(description = "Successfully deleted incident by id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IncidentResource.class)))
+    })
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id){
+        if(incidentService.deleteById(id)){
+            return ResponseEntity.ok().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @Operation(summary = "Save an incident with Wokwi", responses = {
             @ApiResponse(description = "Incident successfully created",

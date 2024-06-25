@@ -14,4 +14,5 @@ public class CreateNewResource {
     private String description;
     @NotNull
     private Police givenPolice;
+    private String district;
 }

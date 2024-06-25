@@ -39,6 +39,11 @@ public class IncidentServiceImpl implements IncidentService {
     }
 
     @Override
+    public List<Incident> fetchByNearCitizen(Double latitude, Double longitude, Integer km) {
+        return incidentRepository.findIncidentsNearLocation(latitude, longitude, km.doubleValue());
+    }
+
+    @Override
     public List<Incident> fetchAllPendient() {
         return incidentRepository.findIncidentPendient();
     }
@@ -111,4 +116,14 @@ public class IncidentServiceImpl implements IncidentService {
     public List<Incident> getPendingIncidentsByCitizenId(Integer citizenId) {
         return incidentRepository.findByStatusPendingByCitizenId(citizenId);
     }
+
+    @Override
+    public boolean deleteById(Integer id){
+        var IncidentToDelete = incidentRepository.findById(id)
+                .orElseThrow(() ->  new CustomException("Incident not found", HttpStatus.NOT_FOUND));
+        incidentRepository.delete(IncidentToDelete);
+        return true;
+    }
+
+
 }
