@@ -93,6 +93,17 @@ public class IncidentController {
         return new ResponseEntity<>( this.mapper.toResource(incidentService.save(this.mapper.toModel(resource), resource.getCitizenId())), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Save an incident with Wokwi", responses = {
+            @ApiResponse(description = "Incident successfully created",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IncidentResource.class)))
+    })
+    @PostMapping("/wokwi")
+    public ResponseEntity<IncidentResource> saveWokwi(@RequestBody CreateIncidentResource resource){
+        return new ResponseEntity<>( this.mapper.toResource(incidentService.save(this.mapper.toModel(resource), resource.getCitizenId())), HttpStatus.CREATED);
+    }
+
 
     @Operation(summary = "Get pending incidents by citizen id", responses = {
             @ApiResponse(description = "Successfully fetched all pending incidents by citizen id",
