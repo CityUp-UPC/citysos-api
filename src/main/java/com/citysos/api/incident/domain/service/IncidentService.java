@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface IncidentService {
     List<Incident> fetchAll();
     List<Incident> fetchAllPendient();
+    List<Incident> fetchByNearCitizen(Double latitude, Double longitude, Integer km);
     List<Incident> findIncidentHelp();
 
     List<Incident> fetchByDistrict(String district);
@@ -19,5 +20,6 @@ public interface IncidentService {
 
     List<Incident> getPendingIncidentsByCitizenId(Integer citizenId);
 
+    boolean deleteById(Integer id);
 
 }

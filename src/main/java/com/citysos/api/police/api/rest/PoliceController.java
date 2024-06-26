@@ -1,6 +1,13 @@
 package com.citysos.api.police.api.rest;
 
 import com.citysos.api.citizen.domain.model.entity.Citizen;
+import com.citysos.api.incident.domain.entity.Feed;
+import com.citysos.api.incident.domain.service.FeedService;
+import com.citysos.api.incident.domain.service.IncidentService;
+import com.citysos.api.incident.mapping.FeedMapper;
+import com.citysos.api.incident.mapping.IncidentMapper;
+import com.citysos.api.incident.resources.CreateFeedResource;
+import com.citysos.api.incident.resources.RequestFeedResource;
 import com.citysos.api.police.domain.model.entity.Image;
 import com.citysos.api.police.domain.model.entity.New;
 import com.citysos.api.police.domain.model.entity.Police;
@@ -17,6 +24,7 @@ import com.citysos.api.police.resources.police.CreatePoliceResource;
 import com.citysos.api.police.resources.police.PoliceResource;
 import com.citysos.api.police.resources.police.RequestJoinIncident;
 import com.citysos.api.police.resources.police.UpdateLocationRequest;
+import com.citysos.api.shared.exception.CustomException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,10 +48,14 @@ import java.util.stream.Collectors;
 public class PoliceController {
     private final PoliceService policeService;
     private final ImageService imageService;
+    private final IncidentService incidentService;
     private final NewService newService;
+    private final FeedService feedService;
     private final PoliceMapper mapper;
     private final ImageMapper imageMapper;
+    private final IncidentMapper incidentMapper;
     private final NewMapper newMapper;
+    private final FeedMapper feedMapper;
 
     @Operation(summary = "Get all registered polices", responses = {
             @ApiResponse(description = "Successfully fetched all polices",
@@ -112,22 +124,39 @@ public class PoliceController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+
+    @Operation(summary = "Update location of a police", responses = {
+            @ApiResponse(description = "Location successfully updated",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json"))
+    })
     @PatchMapping("{id}/location")
     public ResponseEntity<?> updateLocation(@PathVariable Integer id, @RequestBody UpdateLocationRequest request) {
         policeService.updateLocation(id, request.getLatitude(), request.getLongitude());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Update in service status of a police", responses = {
+            @ApiResponse(description = "In service status successfully updated",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json"))
+    })
     @PatchMapping("{id}")
     public ResponseEntity<?> updateInService(@PathVariable Integer id) {
         policeService.updateInService(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @Operation(summary = "Create a new", responses = {
+            @ApiResponse(description = "Successfully created new",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Feed.class)))
+    })
     @PostMapping("{policeId}/news")
     public New saveNew(@RequestParam("description") String description,
                        @RequestParam("files") List<MultipartFile> files,
+                       @RequestParam("district") String district,
                        @PathVariable Integer policeId) {
 
         Optional<Police> policeOptional = policeService.fetchById(policeId);
@@ -139,6 +168,7 @@ public class PoliceController {
         CreateNewResource aux = new CreateNewResource();
         aux.setDescription(description);
         aux.setGivenPolice(police);
+        aux.setDistrict(district);
 
         New newSaved = newService.save(this.newMapper.toModel(aux));
 
@@ -166,6 +196,24 @@ public class PoliceController {
     @GetMapping("user/{id}")
     public Police fetchByUserId(@PathVariable Integer id) {
         return policeService.fetchByUserId(id);
+    }
+
+
+    @Operation(summary = "Get all feeds by incident id", responses = {
+            @ApiResponse(description = "Successfully fetched all feeds by incident id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Feed.class)))
+    })
+    //@PostMapping("incident-feed")
+    @PostMapping("{id}/incident/{incidentId}/feed")
+    public Feed feedIncident(@PathVariable Integer id, @PathVariable Integer incidentId, @RequestBody RequestFeedResource resource){
+        //public Feed feedIncident(@RequestBody CreateFeedResource resource){
+        CreateFeedResource aux = new CreateFeedResource();
+        aux.setComment(resource.getComment());
+        aux.setGivenIncident(incidentService.fetchById(incidentId).orElseThrow(() -> new CustomException("Incident not found", HttpStatus.NOT_FOUND)));
+        aux.setGivenPolice(policeService.fetchById(id).orElseThrow(() -> new CustomException("Police not found", HttpStatus.NOT_FOUND)));
+        return feedService.save(this.feedMapper.toModel(aux));
     }
 
 }

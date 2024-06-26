@@ -46,4 +46,8 @@ public interface IncidentRepository extends JpaRepository<Incident, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status != 'COMPLETED' AND citizen_id = :citizenId")
     List<Incident> findByStatusPendingByCitizenId(Integer citizenId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE " +
+            "(6371 * acos(cos(radians(:latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(latitude)))) < :km")
+    List<Incident> findIncidentsNearLocation(Double latitude, Double longitude, Double km);
 }

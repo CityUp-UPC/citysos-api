@@ -7,4 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class MappingConfiguration {
     @Bean
     public IncidentMapper incidentMapper(){ return new IncidentMapper(); }
+
+    @Bean
+    public FeedMapper feedMapper(){return new FeedMapper();}
 }
