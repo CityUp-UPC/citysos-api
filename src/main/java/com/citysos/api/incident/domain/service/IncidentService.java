@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface IncidentService {
     List<Incident> fetchAll();
+    List<Incident> fetchByPoliceId(Integer policeId);
+    List<Incident> fetchAllInProgress();
     List<Incident> fetchAllPendient();
     List<Incident> fetchByNearCitizen(Double latitude, Double longitude, Integer km);
     List<Incident> findIncidentHelp();

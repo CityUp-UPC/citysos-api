@@ -12,8 +12,14 @@ import java.util.Optional;
 public interface IncidentRepository extends JpaRepository<Incident, Integer> {
     List<Incident> findByDistrict(String district);
 
+    @Query("SELECT i FROM Incident i JOIN i.police p WHERE p.id = :policeId")
+    List<Incident> fetchByPoliceId(Integer policeId);
+
     @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status = 'PENDIENT'")
     List<Incident> findIncidentPendient();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status = 'IN_PROGRESS'")
+    List<Incident> findIncidentInProgress();
 
     @Query(nativeQuery = true, value = "SELECT * FROM incidents WHERE status = 'HELP_REQUIRED'")
     List<Incident> findIncidentHelp();
