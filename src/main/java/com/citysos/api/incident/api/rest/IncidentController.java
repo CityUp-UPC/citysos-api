@@ -37,6 +37,17 @@ public class IncidentController {
         return incidentService.fetchAll();
     }
 
+    @Operation(summary = "Get all incidents by police id", responses = {
+            @ApiResponse(description = "Successfully fetched all incidents by police id",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IncidentResource.class)))
+    })
+    @GetMapping("/police/{policeId}")
+    public List<Incident> fetchByPoliceId(@PathVariable Integer policeId) {
+        return incidentService.fetchByPoliceId(policeId);
+    }
+
     @Operation(summary = "Get all near incidents by km", responses = {
             @ApiResponse(description = "Successfully fetched near incidents by km",
                     responseCode = "201",
@@ -68,6 +79,17 @@ public class IncidentController {
     @GetMapping("/pendients")
     public List<Incident> fetchAllPendient(){
         return incidentService.fetchAllPendient();
+    }
+
+    @Operation(summary = "Get all in progress incidents", responses = {
+            @ApiResponse(description = "Successfully fetched all in progress incidents",
+                    responseCode = "201",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IncidentResource.class)))
+    })
+    @GetMapping("/in-progress")
+    public List<Incident> fetchAllInProgress(){
+        return incidentService.fetchAllInProgress();
     }
 
     @Operation(summary = "Get all help incidents", responses = {

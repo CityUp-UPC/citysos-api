@@ -39,6 +39,16 @@ public class IncidentServiceImpl implements IncidentService {
     }
 
     @Override
+    public List<Incident> fetchByPoliceId(Integer policeId) {
+        return incidentRepository.fetchByPoliceId(policeId);
+    }
+
+    @Override
+    public List<Incident> fetchAllInProgress() {
+        return incidentRepository.findIncidentInProgress();
+    }
+
+    @Override
     public List<Incident> fetchByNearCitizen(Double latitude, Double longitude, Integer km) {
         return incidentRepository.findIncidentsNearLocation(latitude, longitude, km.doubleValue());
     }
